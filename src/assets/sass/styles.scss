@@ -56,9 +56,9 @@ body {
   }
 
   #main-container {
-    background-color: lighten($main-bg-color, 2%);
-    border: solid 1px lighten($main-bg-color, 20%);
-    box-shadow: 0px 0px 15px 5px darken($main-bg-color, 5%);
+    background: transparent url("/images/trans-bg.png") repeat;
+    border: solid 2px lighten($main-bg-color, 20%);
+    box-shadow: 0px 0px 20px 3px darken($main-bg-color, 10%);
     border-radius: $radius-large;
     margin-top: 20px;
     padding: 20px;
@@ -72,8 +72,9 @@ body {
       height: calc(100% - 40px);
       display: flex;
       justify-content: center;
-      align-items: center;
-      background: rgba(50, 24, 37, 0.75);
+      // align-items: center;
+      padding-top: 300px;
+      background: rgba(50, 24, 37, 0.85);
     }
 
     .tabs {
@@ -96,6 +97,12 @@ body {
             a {
               border-bottom-color: $yellow-text-color;
               color: $yellow-text-color;
+            }
+            &.scorers {
+              a {
+                border-bottom-color: lighten($orange, 15%);
+                color: lighten($orange, 15%);
+              }
             }
           }
         }
@@ -145,6 +152,11 @@ body {
       background: linear-gradient(0deg, $main-text-color 0%, $yellow-text-color 100%);
       border-bottom: solid 1px $yellow-text-color;
 
+      &.tab-scorers {
+        background: linear-gradient(0deg, lighten($orange, 35%) 0%, lighten($orange, 15%) 100%);
+        border-bottom: solid 1px lighten($orange, 25%);
+      }
+
       .greyscale {
         img {
           filter: grayscale(100%);
@@ -156,12 +168,18 @@ body {
     .table {
       thead {
         tr {
-          background-color: $main-text-color !important;
+          background-color: $main-text-color;
           border-top: solid 1px $white;
 
           th {
             border-bottom-color: lighten($main-bg-color, 35%);
             color: lighten($main-bg-color, 35%);
+          }
+        }
+
+        &.th-scorers {
+          tr {
+            background-color: lighten($orange, 35%);
           }
         }
       }

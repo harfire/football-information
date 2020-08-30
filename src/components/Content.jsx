@@ -25,7 +25,7 @@ export default function Content(props) {
       // TODO: Create proper function to error handling
     } finally {
       setInitLoading(false);
-      setIsLoadingOverlay(false);
+      setTimeout(() => setIsLoadingOverlay(false), 100);
     }
   }
 
@@ -40,7 +40,7 @@ export default function Content(props) {
       // TODO: Create proper function to error handling
     } finally {
       setScorersLoading(false);
-      setIsLoadingOverlay(false);
+      setTimeout(() => setIsLoadingOverlay(false), 100);
     }
   }
 
@@ -128,7 +128,7 @@ export default function Content(props) {
       )}
 
       <div className='column is-full'>
-        <div className='columns'>
+        <div className='columns m-b-0'>
           <div className='column is-half'>
             <div className='field'>
               <div className='control'>
@@ -173,7 +173,7 @@ export default function Content(props) {
                     <span>Klasemen</span>
                   </a>
                 </li>
-                <li onClick={() => setTabIndex(1)} className={tabIndex === 1 ? 'is-active' : ''}>
+                <li onClick={() => setTabIndex(1)} className={tabIndex === 1 ? 'is-active scorers' : ''}>
                   <a href='!#'>
                     <span>Top Skor</span>
                   </a>
@@ -181,10 +181,10 @@ export default function Content(props) {
               </ul>
             </div>
 
-            <div className='columns is-gapless logo-club-cont m-0 p-0'>
+            <div className={tabIndex === 0 ? 'columns is-gapless logo-club-cont m-0 p-0' : 'columns is-gapless logo-club-cont tab-scorers m-0 p-0'}>
               {leagueList.map((val, i) => (
                 <div key={`leagueList-${i}`} className={selectedLeague === val.id ? 'column has-text-centered is-one-fifth' : 'column has-text-centered is-one-fifth greyscale'}>
-                  <img className='p-t-5' src={val.logo} alt={val.name} />
+                  <img className='p-t-10' src={val.logo} alt={val.name} />
                 </div>
               ))}
             </div>
@@ -237,7 +237,7 @@ export default function Content(props) {
 
             {tabIndex === 1 && (
               <table className='table is-striped is-fullwidth'>
-                <thead>
+                <thead className='th-scorers'>
                   <tr>
                     <th className='has-text-centered'>#</th>
                     <th>Nama</th>
