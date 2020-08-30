@@ -72,6 +72,19 @@ export default function Content(props) {
       selected: false,
     }));
 
+  const championshipStatus = (league, index) => {
+    const position = index + 1;
+    const findLeague = leagueList.find((val) => val.id === league);
+
+    if (tabIndex === 0 && findLeague.qualification.champion.includes(index + 1)) return 'blue';
+    if (tabIndex === 0 && findLeague.qualification.champion_qualification.includes(index + 1)) return 'lightblue';
+    if (tabIndex === 0 && findLeague.qualification.europa.includes(index + 1)) return 'yellow';
+    if (tabIndex === 0 && findLeague.qualification.europa_qualification.includes(index + 1)) return 'purple';
+    if (tabIndex === 0 && findLeague.qualification.relegation.includes(index + 1)) return 'red';
+
+    return '';
+  };
+
   const changeLeague = (e) => {
     const { value } = e.target;
     setSelectedLeague(value);
@@ -120,7 +133,7 @@ export default function Content(props) {
             <div className='field'>
               <div className='control'>
                 <div className='select is-warning is-fullwidth'>
-                  <select onChange={(e) => changeLeague(e)}>
+                  <select onChange={(e) => changeLeague(e)} disabled={initLoading}>
                     {leagueList.map((val, i) => (
                       <option key={`leagueList-${i}`} value={val.id}>
                         {val.name}
@@ -135,10 +148,10 @@ export default function Content(props) {
             <form onSubmit={(e) => searchByKeyword(e)}>
               <div className='field has-addons'>
                 <div className='control is-expanded'>
-                  <input onChange={(e) => setSearchKeyword(e.target.value)} className={'input is-warning is-fullwidth'} type='text' placeholder='Search' />
+                  <input onChange={(e) => setSearchKeyword(e.target.value)} className={'input is-warning is-fullwidth'} type='text' placeholder='Search' disabled={initLoading} />
                 </div>
                 <div className='control'>
-                  <button type='submit' className='button is-warning'>
+                  <button type='submit' className='button is-warning' disabled={initLoading}>
                     Cari
                   </button>
                 </div>
@@ -177,36 +190,56 @@ export default function Content(props) {
             </div>
 
             {tabIndex === 0 && (
-              <table className='table is-striped is-fullwidth'>
-                <thead>
-                  <tr>
-                    <th>Tim</th>
-                    <th className='has-text-centered'>Main</th>
-                    <th className='has-text-centered'>Total Poin</th>
-                    <th className='has-text-centered'>Menang</th>
-                    <th className='has-text-centered'>Imbang</th>
-                    <th className='has-text-centered'>Kalah</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {leagueStandingList.map((val, i) => (
-                    <tr key={`leagueStandingList-${i}`} className={val.selected ? 'selected-row' : ''}>
-                      <td className='has-text-weight-semibold'>{val.squad_name}</td>
-                      <td className='has-text-centered'>{val.squad_played}</td>
-                      <td className='has-text-centered'>{val.squad_points}</td>
-                      <td className='has-text-centered'>{val.squad_winned}</td>
-                      <td className='has-text-centered'>{val.squad_tie}</td>
-                      <td className='has-text-centered'>{val.squad_loosed}</td>
+              <>
+                <table className='table is-striped is-fullwidth'>
+                  <thead>
+                    <tr>
+                      <th className='has-text-centered'>#</th>
+                      <th>Tim</th>
+                      <th className='has-text-centered'>Main</th>
+                      <th className='has-text-centered'>Total Poin</th>
+                      <th className='has-text-centered'>Menang</th>
+                      <th className='has-text-centered'>Imbang</th>
+                      <th className='has-text-centered'>Kalah</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {leagueStandingList.map((val, i) => (
+                      <tr key={`leagueStandingList-${i}`} className={val.selected ? 'selected-row' : ''}>
+                        <td className={`champion-${championshipStatus(selectedLeague, i)} has-text-centered`}>{i + 1}</td>
+                        <td className='has-text-weight-semibold'>{val.squad_name}</td>
+                        <td className='has-text-centered'>{val.squad_played}</td>
+                        <td className='has-text-centered has-text-weight-semibold'>{val.squad_points}</td>
+                        <td className='has-text-centered'>{val.squad_winned}</td>
+                        <td className='has-text-centered'>{val.squad_tie}</td>
+                        <td className='has-text-centered'>{val.squad_loosed}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+
+                <div className='collumns is-gapless is-multiline color-desc-cont'>
+                  <div className='column is-full p-0'>
+                    <span className='champion-blue color-icon'></span>
+                    <span className='color-desc-name'>Liga Champion</span>
+                    <span className='champion-lightblue color-icon'></span>
+                    <span className='color-desc-name'>Kualifikasi Liga Champion</span>
+                    <span className='champion-yellow color-icon'></span>
+                    <span className='color-desc-name'>Liga Eropa</span>
+                    <span className='champion-purple color-icon'></span>
+                    <span className='color-desc-name'>Kualifikasi Liga Eropa</span>
+                    <span className='champion-red color-icon'></span>
+                    <span className='color-desc-name'>Degradasi</span>
+                  </div>
+                </div>
+              </>
             )}
 
             {tabIndex === 1 && (
               <table className='table is-striped is-fullwidth'>
                 <thead>
                   <tr>
+                    <th className='has-text-centered'>#</th>
                     <th>Nama</th>
                     <th className='has-text-centered'>Klub</th>
                     <th className='has-text-centered'>Posisi</th>
@@ -217,11 +250,17 @@ export default function Content(props) {
                 <tbody>
                   {scorers.map((val, i) => (
                     <tr key={`leagueStandingList-${i}`} className={val.selected ? 'selected-row' : ''}>
-                      <td className='has-text-weight-semibold'>{val.player_name}</td>
+                      <td className='has-text-centered'>{i + 1}</td>
+                      <td className='has-text-weight-semibold'>
+                        <span className='icon m-r-5'>
+                          <i className='fas fa-futbol'></i>
+                        </span>
+                        <span>{val.player_name}</span>
+                      </td>
                       <td className='has-text-centered'>{val.player_squad}</td>
                       <td className='has-text-centered'>{val.player_role}</td>
                       <td className='has-text-centered'>{val.player_penalties}</td>
-                      <td className='has-text-centered'>{val.player_goals}</td>
+                      <td className='has-text-centered has-text-weight-semibold'>{val.player_goals}</td>
                     </tr>
                   ))}
                 </tbody>

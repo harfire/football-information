@@ -102,6 +102,44 @@ body {
       }
     }
 
+    .color-desc-cont {
+      span {
+        display: inline-block;
+        margin: 0 5px 5px 0;
+        vertical-align: text-top;
+        font-size: 0.86em;
+      }
+      .color-icon {
+        width: 18px;
+        height: 18px;
+        border-radius: 3px;
+      }
+      .color-desc-name {
+        margin-right: 18px;
+      }
+    }
+
+    .champion-blue {
+      background-color: $blue;
+      color: $white;
+    }
+    .champion-lightblue {
+      background-color: $green;
+      color: $white;
+    }
+    .champion-yellow {
+      background-color: $yellow;
+      color: $white;
+    }
+    .champion-purple {
+      background-color: $purple;
+      color: $white;
+    }
+    .champion-red {
+      background-color: $red;
+      color: $white;
+    }
+
     .logo-club-cont {
       background: $white;
       background: linear-gradient(0deg, $main-text-color 0%, $yellow-text-color 100%);
