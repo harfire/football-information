@@ -1,0 +1,143 @@
+@import "./variables.scss";
+
+$main-bg-color: rgba(50, 24, 37, 1) !default;
+$main-text-color: rgba(249, 244, 161, 1) !default;
+$yellow-text-color: rgba(249, 217, 6, 1) !default;
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: $main-bg-color;
+  color: $main-text-color;
+  background: url("/images/bg.png") center center no-repeat fixed;
+}
+
+// css footer
+.footer {
+  width: 1440px;
+  height: 380px;
+
+  h4,
+  li,
+  a {
+    line-height: 1.25;
+    color: $main-text-color;
+  }
+
+  h4 {
+    font-weight: bold;
+  }
+  li {
+    font-weight: normal;
+    margin: 15px;
+  }
+
+  hr {
+    width: 100%;
+  }
+
+  .copyright {
+    color: $main-text-color;
+    line-height: 1.25;
+  }
+}
+
+#football-container {
+  max-width: 768px;
+
+  .header-container {
+    .logo-cont {
+      width: 242px;
+      height: 61px;
+      margin: 20px auto 0 auto;
+    }
+  }
+
+  #main-container {
+    background-color: lighten($main-bg-color, 2%);
+    border: solid 1px lighten($main-bg-color, 20%);
+    box-shadow: 0px 0px 15px 5px darken($main-bg-color, 5%);
+    border-radius: $radius-large;
+    margin-top: 20px;
+    padding: 20px;
+    position: relative;
+
+    .overlay-loading {
+      position: absolute;
+      background: yellow;
+      z-index: 3;
+      width: calc(100% - 40px);
+      height: calc(100% - 40px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: rgba(50, 24, 37, 0.75);
+    }
+
+    .tabs {
+      margin-bottom: 0;
+
+      ul {
+        border-bottom-width: 6px;
+        border-bottom-color: lighten($main-bg-color, 20%);
+
+        li {
+          a {
+            border-bottom-width: 6px;
+            margin-bottom: -6px;
+            border-bottom-color: lighten($main-bg-color, 20%);
+            font-weight: 600;
+            color: lighten($main-bg-color, 50%);
+          }
+
+          &.is-active {
+            a {
+              border-bottom-color: $yellow-text-color;
+              color: $yellow-text-color;
+            }
+          }
+        }
+      }
+    }
+
+    .logo-club-cont {
+      background: $white;
+      background: linear-gradient(0deg, $main-text-color 0%, $yellow-text-color 100%);
+      border-bottom: solid 1px $yellow-text-color;
+
+      .greyscale {
+        img {
+          filter: grayscale(100%);
+          opacity: 0.15;
+        }
+      }
+    }
+
+    .table {
+      thead {
+        tr {
+          background-color: $main-text-color !important;
+          border-top: solid 1px $white;
+
+          th {
+            border-bottom-color: lighten($main-bg-color, 35%);
+            color: lighten($main-bg-color, 35%);
+          }
+        }
+      }
+      tbody {
+        tr {
+          &.selected-row {
+            background: $main-text-color;
+            background: linear-gradient(180deg, $main-text-color 0%, $yellow-text-color 100%);
+          }
+        }
+      }
+    }
+  }
+
+  .footer-container {
+  }
+}

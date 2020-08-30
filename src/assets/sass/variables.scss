@@ -1,0 +1,94 @@
+@charset "utf-8";
+
+// Import a Google Font
+// @import url("https://fonts.googleapis.com/css2?family=Dosis&display=swap");
+// @import url("https://fonts.googleapis.com/css2?family=Abel&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600&display=swap");
+
+// Set your colors
+$purple: #8a4d76;
+$pink: #fa7c91;
+$brown: #757763;
+$beige-light: #d0d1cd;
+$beige-lighter: #eff0eb;
+$black: hsl(0, 0%, 4%) !default;
+$black-bis: hsl(0, 0%, 7%) !default;
+$black-ter: hsl(0, 0%, 14%) !default;
+$grey-darker: hsl(0, 0%, 21%) !default; // #363636
+$grey-dark: hsl(0, 0%, 29%) !default; // #4a4a4a
+$grey: hsl(0, 0%, 48%) !default; // #7a7a7a
+$grey-light: hsl(0, 0%, 71%) !default; // #b5b5b5
+$grey-lighter: hsl(0, 0%, 86%) !default; // #dbdbdb
+$grey-lightest: hsl(0, 0%, 94%) !default; // #f0f0f0
+$white-ter: hsl(0, 0%, 96%) !default;
+$white-bis: hsl(0, 0%, 98%) !default;
+$white: hsl(0, 0%, 100%) !default;
+$orange: hsl(14, 100%, 53%) !default;
+$yellow: hsl(45, 97%, 51%) !default;
+$green: hsl(124, 44%, 51%) !default;
+$turquoise: hsl(171, 100%, 41%) !default;
+$cyan: hsl(204, 86%, 53%) !default;
+$blue: hsl(206, 72%, 47%) !default;
+$purple: hsl(271, 100%, 71%) !default;
+$red: hsl(360, 100%, 44%) !default;
+$light-yellow: hsl(56, 25%, 100%) !default;
+$light-orange: #f67b29;
+
+// 16px based font size
+$size-1: 2rem !default; // 32px
+$size-2: 1.75rem !default; // 28px
+$size-3: 1.5rem !default; // 24px
+$size-4: 1.25rem !default; // 20px
+$size-5: 1.125rem !default; // 18px
+$size-6: 1rem !default; // 16px
+$size-7: 0.88rem !default; // 14px
+$size-8: 0.75rem !default; // 12px
+$weight-light: 300 !default;
+$weight-normal: 400 !default;
+$weight-medium: 500 !default;
+$weight-semibold: 600 !default;
+$weight-bold: 700 !default;
+
+// Miscellaneous
+$easing: ease-out !default;
+$radius-small: 2px !default;
+$radius: 4px !default;
+$radius-large: 8px !default;
+$radius-rounded: 290486px !default;
+$speed: 86ms !default;
+
+// Flags
+$variable-columns: true !default;
+$primary: #7883e5 !default;
+$info: $grey-light !default;
+$success: $green !default;
+$warning: $yellow !default;
+$danger: $red !default;
+$light: $white-ter !default;
+$dark: $grey-darker !default;
+// $orange: $light-orange !default;
+
+// Link
+$link: $primary !default;
+$link-hover: darken($success, 15%) !default;
+
+// Update Bulma's global variables
+$family-sans-serif: "Rajdhani", sans-serif;
+$widescreen-enabled: false;
+$fullhd-enabled: false;
+
+// Body
+$body-bg: $white;
+$body-background: $body-bg !default;
+$body-size: 16px !default;
+
+// Import only what you need from Bulma
+@import "../../../node_modules/bulma/sass/utilities/_all.sass";
+@import "../../../node_modules/bulma/sass/base/_all.sass";
+@import "../../../node_modules/bulma/sass/elements/button.sass";
+@import "../../../node_modules/bulma/sass/elements/container.sass";
+@import "../../../node_modules/bulma/sass/elements/form.sass";
+@import "../../../node_modules/bulma/sass/elements/title.sass";
+@import "../../../node_modules/bulma/sass/components/navbar.sass";
+@import "../../../node_modules/bulma/sass/layout/hero.sass";
+@import "../../../node_modules/bulma/sass/layout/section.sass";
