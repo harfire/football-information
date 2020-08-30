@@ -1,0 +1,235 @@
+import React, { useState, useEffect } from 'react';
+import getAPI from '../utils/getAPI';
+import LoadingUi from './common/Loading';
+import leagueList from '../constants/leagueList';
+
+export default function Content(props) {
+  const [initLoading, setInitLoading] = useState(true);
+  const [isLoadingOverlay, setIsLoadingOverlay] = useState(false);
+  const [scorersLoading, setScorersLoading] = useState(true);
+  const [itemNotFound, setItemNotFound] = useState(false);
+  const [leagueStandingList, setLeagueStandingList] = useState([]);
+  const [scorers, setScorers] = useState([]);
+  const [tabIndex, setTabIndex] = useState(0);
+  const [searchKeyword, setSearchKeyword] = useState('');
+  const [selectedLeague, setSelectedLeague] = useState('seriea');
+
+  async function getDataLeague(method, endpoint, params) {
+    try {
+      const { data } = await getAPI(method, endpoint, params);
+
+      if (data) {
+        setLeagueStandingList(buildData(data));
+      }
+    } catch (error) {
+      // TODO: Create proper function to error handling
+    } finally {
+      setInitLoading(false);
+      setIsLoadingOverlay(false);
+    }
+  }
+
+  async function getDataScorers(method, endpoint, params) {
+    try {
+      const { data } = await getAPI(method, endpoint, params);
+
+      if (data) {
+        setScorers(buildData(data));
+      }
+    } catch (error) {
+      // TODO: Create proper function to error handling
+    } finally {
+      setScorersLoading(false);
+      setIsLoadingOverlay(false);
+    }
+  }
+
+  const buildData = (data) => {
+    return data.map((val) => ({
+      ...val,
+      selected: false,
+    }));
+  };
+
+  useEffect(() => {
+    getDataLeague('GET', `${process.env.REACT_APP_BASE_API}seriea/squads`, {});
+    getDataScorers('GET', `${process.env.REACT_APP_BASE_API}seriea/scorers`, {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (!searchKeyword) {
+      setLeagueStandingList(clearSelection(leagueStandingList));
+      setScorers(clearSelection(scorers));
+      setItemNotFound(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchKeyword]);
+
+  const clearSelection = (arr) =>
+    arr.map((val) => ({
+      ...val,
+      selected: false,
+    }));
+
+  const changeLeague = (e) => {
+    const { value } = e.target;
+    setSelectedLeague(value);
+    setIsLoadingOverlay(true);
+    getDataLeague('GET', `${process.env.REACT_APP_BASE_API}${value}/squads`, {});
+    getDataScorers('GET', `${process.env.REACT_APP_BASE_API}${value}/scorers`, {});
+  };
+
+  const searchByKeyword = (e) => {
+    e.preventDefault();
+
+    const dataLeague = clearSelection(leagueStandingList);
+    const dataScorers = clearSelection(scorers);
+    const keyword = searchKeyword.toLowerCase();
+
+    if (keyword) {
+      setItemNotFound(false);
+
+      if (tabIndex === 0) {
+        const dataFiltered = dataLeague.map((val) => (val.squad_name.toLowerCase().includes(keyword) ? { ...val, selected: true } : val));
+        setLeagueStandingList(dataFiltered);
+
+        if (!dataFiltered.some((val) => val.selected)) setItemNotFound(true);
+      } else {
+        const dataFiltered = dataScorers.map((val) => (val.player_name.toLowerCase().includes(keyword) ? { ...val, selected: true } : val));
+        setScorers(dataFiltered);
+
+        if (!dataFiltered.some((val) => val.selected)) setItemNotFound(true);
+      }
+    }
+  };
+
+  return (
+    <div className='columns is-multiline is-gapless' id='main-container'>
+      {isLoadingOverlay && (
+        <div className='overlay-loading'>
+          <div className='is-clearfix has-text-centered'>
+            <LoadingUi></LoadingUi>
+          </div>
+        </div>
+      )}
+
+      <div className='column is-full'>
+        <div className='columns'>
+          <div className='column is-half'>
+            <div className='field'>
+              <div className='control'>
+                <div className='select is-warning is-fullwidth'>
+                  <select onChange={(e) => changeLeague(e)}>
+                    {leagueList.map((val, i) => (
+                      <option key={`leagueList-${i}`} value={val.id}>
+                        {val.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className='column is-half'>
+            <form onSubmit={(e) => searchByKeyword(e)}>
+              <div className='field has-addons'>
+                <div className='control is-expanded'>
+                  <input onChange={(e) => setSearchKeyword(e.target.value)} className={'input is-warning is-fullwidth'} type='text' placeholder='Search' />
+                </div>
+                <div className='control'>
+                  <button type='submit' className='button is-warning'>
+                    Cari
+                  </button>
+                </div>
+              </div>
+            </form>
+            {itemNotFound && <div className='is-danger'>Data tidak ditemukan!</div>}
+          </div>
+        </div>
+        {initLoading || scorersLoading ? (
+          <div className='is-clearfix has-text-centered'>
+            <LoadingUi></LoadingUi>
+          </div>
+        ) : (
+          <div className='is-clearfix'>
+            <div className='tabs is-centered'>
+              <ul>
+                <li onClick={() => setTabIndex(0)} className={tabIndex === 0 ? 'is-active' : ''}>
+                  <a href='!#'>
+                    <span>Klasemen</span>
+                  </a>
+                </li>
+                <li onClick={() => setTabIndex(1)} className={tabIndex === 1 ? 'is-active' : ''}>
+                  <a href='!#'>
+                    <span>Top Skor</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div className='columns is-gapless logo-club-cont m-0 p-0'>
+              {leagueList.map((val, i) => (
+                <div key={`leagueList-${i}`} className={selectedLeague === val.id ? 'column has-text-centered is-one-fifth' : 'column has-text-centered is-one-fifth greyscale'}>
+                  <img className='p-t-5' src={val.logo} alt={val.name} />
+                </div>
+              ))}
+            </div>
+
+            {tabIndex === 0 && (
+              <table className='table is-striped is-fullwidth'>
+                <thead>
+                  <tr>
+                    <th>Tim</th>
+                    <th className='has-text-centered'>Main</th>
+                    <th className='has-text-centered'>Total Poin</th>
+                    <th className='has-text-centered'>Menang</th>
+                    <th className='has-text-centered'>Imbang</th>
+                    <th className='has-text-centered'>Kalah</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {leagueStandingList.map((val, i) => (
+                    <tr key={`leagueStandingList-${i}`} className={val.selected ? 'selected-row' : ''}>
+                      <td className='has-text-weight-semibold'>{val.squad_name}</td>
+                      <td className='has-text-centered'>{val.squad_played}</td>
+                      <td className='has-text-centered'>{val.squad_points}</td>
+                      <td className='has-text-centered'>{val.squad_winned}</td>
+                      <td className='has-text-centered'>{val.squad_tie}</td>
+                      <td className='has-text-centered'>{val.squad_loosed}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+
+            {tabIndex === 1 && (
+              <table className='table is-striped is-fullwidth'>
+                <thead>
+                  <tr>
+                    <th>Nama</th>
+                    <th className='has-text-centered'>Klub</th>
+                    <th className='has-text-centered'>Posisi</th>
+                    <th className='has-text-centered'>Penalti</th>
+                    <th className='has-text-centered'>Total Goal</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {scorers.map((val, i) => (
+                    <tr key={`leagueStandingList-${i}`} className={val.selected ? 'selected-row' : ''}>
+                      <td className='has-text-weight-semibold'>{val.player_name}</td>
+                      <td className='has-text-centered'>{val.player_squad}</td>
+                      <td className='has-text-centered'>{val.player_role}</td>
+                      <td className='has-text-centered'>{val.player_penalties}</td>
+                      <td className='has-text-centered'>{val.player_goals}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
