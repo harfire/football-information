@@ -76,11 +76,11 @@ export default function Content(props) {
     const position = index + 1;
     const findLeague = leagueList.find((val) => val.id === league);
 
-    if (tabIndex === 0 && findLeague.qualification.champion.includes(index + 1)) return 'blue';
-    if (tabIndex === 0 && findLeague.qualification.champion_qualification.includes(index + 1)) return 'lightblue';
-    if (tabIndex === 0 && findLeague.qualification.europa.includes(index + 1)) return 'yellow';
-    if (tabIndex === 0 && findLeague.qualification.europa_qualification.includes(index + 1)) return 'purple';
-    if (tabIndex === 0 && findLeague.qualification.relegation.includes(index + 1)) return 'red';
+    if (tabIndex === 0 && findLeague.qualification.champion.includes(position)) return 'blue';
+    if (tabIndex === 0 && findLeague.qualification.champion_qualification.includes(position)) return 'lightblue';
+    if (tabIndex === 0 && findLeague.qualification.europa.includes(position)) return 'yellow';
+    if (tabIndex === 0 && findLeague.qualification.europa_qualification.includes(position)) return 'purple';
+    if (tabIndex === 0 && findLeague.qualification.relegation.includes(position)) return 'red';
 
     return '';
   };
